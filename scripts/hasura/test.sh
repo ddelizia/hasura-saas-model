@@ -5,6 +5,10 @@ set -e
 . ./scripts/hasura/functions.sh
 
 DATABASE="saas"
+WAIT=10
+
+echo "⌛️ Wait $WAIT s"
+sleep $WAIT
 
 echo "🧪 Resetting the database"
 hasura_reset $DATABASE
