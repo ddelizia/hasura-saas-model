@@ -7,9 +7,11 @@ on:
       - release/*
     paths-ignore:
       - '**.md'
+      - '.gitignore'
   pull_request:
     paths-ignore:
       - '**.md'
+      - '.gitignore'
 
 env:
   POSTGRES_USERNAME: postgres
@@ -20,7 +22,7 @@ jobs:
     name: Test hasura data creation
     runs-on: ubuntu-latest
     steps:
-    
+
       - uses: actions/checkout@v2
       
       - name: Starting up docker image
