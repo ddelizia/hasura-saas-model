@@ -28,6 +28,9 @@ jobs:
       - name: Starting up docker image
         run: docker-compose up -d
 
+      - name: Checking docker logs
+        run: docker-compose logs
+      
       - name: Downloading Hasura CLI
         run: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
       
