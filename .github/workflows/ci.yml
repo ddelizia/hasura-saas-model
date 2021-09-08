@@ -14,7 +14,7 @@ on:
       - '.gitignore'
 
 env:
-  POSTGRES_USERNAME: postgrespassword
+  POSTGRES_PASSWORD: postgrespassword
   HASURA_ADMIN_SECRET: myadminsecretkey
   
 jobs:
