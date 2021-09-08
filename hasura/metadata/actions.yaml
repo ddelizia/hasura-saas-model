@@ -1,0 +1,44 @@
+actions:
+- name: cancel_subscription
+  definition:
+    kind: synchronous
+    handler: '{{MICRO_SUBSCRIPTIONS_BASE_URL}}/cancel'
+    forward_client_headers: true
+  permissions:
+  - role: account_owner
+- name: create_subscription
+  definition:
+    kind: synchronous
+    handler: '{{MICRO_SUBSCRIPTIONS_BASE_URL}}/create'
+    forward_client_headers: true
+  permissions:
+  - role: account_owner
+- name: init_subscription
+  definition:
+    kind: synchronous
+    handler: '{{MICRO_SUBSCRIPTIONS_BASE_URL}}/init'
+    forward_client_headers: true
+  permissions:
+  - role: account_admin
+  - role: account_owner
+  - role: account_user
+  - role: logged_in
+- name: retry_subscription
+  definition:
+    kind: synchronous
+    handler: '{{MICRO_SUBSCRIPTIONS_BASE_URL}}/retry'
+    forward_client_headers: true
+  permissions:
+  - role: account_owner
+custom_types:
+  enums: []
+  input_objects:
+  - name: InitSubscriptionInput
+  - name: CreateSubscriptionInput
+  - name: RetrySubscriptionInput
+  objects:
+  - name: InitSubscriptionOutput
+  - name: CreateSubscriptionOutput
+  - name: RetrySubscriptionOutput
+  - name: CancelSubscriptionOutput
+  scalars: []

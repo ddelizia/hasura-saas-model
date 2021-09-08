@@ -1,0 +1,33 @@
+name: Continuous Integration pipeline
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+      - release/*
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+env:
+  POSTGRES_USERNAME: postgres
+  HASURA_ADMIN_SECRET: myadminsecretkey
+  
+jobs:
+  test-saas:
+    name: Test hasura data creation
+    runs-on: ubuntu-latest
+    steps:
+    
+      - uses: actions/checkout@v2
+      
+      - name: Starting up docker image
+        run: docker-compose up -d
+
+      - name: Downloading Hasura CLI
+        run: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+      
+      - name: Executing tests
+        run: ./scripts/hasura/test.sh

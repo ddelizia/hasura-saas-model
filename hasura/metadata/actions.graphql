@@ -1,0 +1,53 @@
+type Mutation {
+  cancel_subscription: CancelSubscriptionOutput
+}
+
+type Mutation {
+  create_subscription(
+    data: CreateSubscriptionInput!
+  ): CreateSubscriptionOutput
+}
+
+type Mutation {
+  init_subscription(
+    data: InitSubscriptionInput!
+  ): InitSubscriptionOutput
+}
+
+type Mutation {
+  retry_subscription(
+    arg1: RetrySubscriptionInput!
+  ): RetrySubscriptionOutput
+}
+
+input InitSubscriptionInput {
+  account_name: String!
+  id_plan: String!
+}
+
+input CreateSubscriptionInput {
+  payment_method_id: String!
+}
+
+input RetrySubscriptionInput {
+  payment_method_id: String!
+}
+
+type InitSubscriptionOutput {
+  account_id: String!
+}
+
+type CreateSubscriptionOutput {
+  account_id: String!
+  is_active: Boolean!
+}
+
+type RetrySubscriptionOutput {
+  account_id: String!
+  is_active: Boolean!
+}
+
+type CancelSubscriptionOutput {
+  status: String!
+}
+
