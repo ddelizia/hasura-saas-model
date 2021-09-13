@@ -13,3 +13,10 @@ This project provides:
 ## How to start
 
 You can clone or fork this project. If you decide to fork you will be able to keep up to date the infrastructure as well as the datamodel.
+
+## Environment variables
+
+```
+POSTGRES_PASSWORD="postgrespassword"
+HASURA_ADMIN_SECRET="myadminsecretkey"
+```

@@ -12,8 +12,8 @@ export HASURA_GRAPHQL_ADMIN_SECRET=$HASURA_ADMIN_SECRET
 echo "⌛️ Wait $WAIT s"
 sleep $WAIT
 
-echo "🧪 Resetting the database"
-hasura_reset $DATABASE
+echo "🧪 Initializing the database"
+hasura_init $DATABASE
 
 echo "🧪 Executing all down migrations"
 hasura_down_migrations $DATABASE

@@ -30,7 +30,7 @@ hasura_restart_migrations () {
   hasura_up_migrations $DATABASE
 }
 
-hasura_reset () {
+hasura_init () {
   DATABASE=$1
 
   echo "👉 Applying metadata..."
