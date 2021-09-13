@@ -47,13 +47,13 @@ jobs:
       - name: Migration Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: migrtations
+          name: migrtations-latest
           path: |
             ./hasura/migrations
 
       - name: Metadata Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: metadata
+          name: metadata-latest
           path: |
             ./hasura/metadata

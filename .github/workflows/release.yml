@@ -1,0 +1,75 @@
+name: Create release
+on:
+  push:
+    tags:
+    - 'v*'
+
+env:
+  HASURA_ADMIN_SECRET: myadminsecretkey
+
+jobs:
+  test-saas:
+    name: Test hasura data creation
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v2
+      
+      - name: Starting up docker image
+        run: docker-compose -f docker-compose.test.yml up -d
+
+      - name: Checking docker logs
+        run: docker-compose logs
+      
+      - name: Downloading Hasura CLI
+        run: curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+      
+      - name: Executing tests
+        run: ./scripts/hasura/test.sh
+
+  create-release:
+    name: Creating release
+    needs: ["test-saas"]
+    runs-on: ubuntu-latest
+    steps:
+      
+      - uses: actions/checkout@v2
+
+      - name: Build project # This would actually build your project, using zip for an example artifact
+        run: |
+          (cd hasura/metadata && zip -r metadata.zip .)
+          (cd hasura/migrations && zip -r migrations.zip .)
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset Metadata
+        id: upload-release-asset-metadata
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./hasura/metadata/metadata.zip
+          asset_name: metadata.zip
+          asset_content_type: application/zip
+      
+
+      - name: Upload Release Asset Migrations
+        id: upload-release-asset-migrations
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./hasura/migrations/migrations.zip
+          asset_name: migrations.zip
+          asset_content_type: application/zip
