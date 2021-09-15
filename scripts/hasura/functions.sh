@@ -6,10 +6,10 @@ hasura_down_migrations () {
   DATABASE=$1
 
   echo "👉 Execute all down migrations..."
-  hasura migrate apply --database-name saas --disable-interactive --project ./hasura --down all 
+  hasura migrate apply --database-name $DATABASE --disable-interactive --project ./hasura --down all 
   
   echo "👉 Checking migration status..."
-  hasura migrate status --database-name saas --disable-interactive --project ./hasura 
+  hasura migrate status --database-name $DATABASE --disable-interactive --project ./hasura 
 }
 
 hasura_up_migrations () {
