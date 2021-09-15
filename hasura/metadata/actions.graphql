@@ -1,21 +1,27 @@
 type Mutation {
-  cancel_subscription: CancelSubscriptionOutput
+  subscription_cancel: CancelSubscriptionOutput
 }
 
 type Mutation {
-  create_subscription(
+  subscription_change(
+    arg1: ChangeSubscriptionInput!
+  ): ChangeSubscriptionOutput
+}
+
+type Mutation {
+  subscription_create(
     data: CreateSubscriptionInput!
   ): CreateSubscriptionOutput
 }
 
 type Mutation {
-  init_subscription(
+  subscription_init(
     data: InitSubscriptionInput!
   ): InitSubscriptionOutput
 }
 
 type Mutation {
-  retry_subscription(
+  subscription_retry(
     arg1: RetrySubscriptionInput!
   ): RetrySubscriptionOutput
 }
@@ -31,6 +37,11 @@ input CreateSubscriptionInput {
 
 input RetrySubscriptionInput {
   payment_method_id: String!
+}
+
+input ChangeSubscriptionInput {
+  account_id: String!
+  is_active: Boolean!
 }
 
 type InitSubscriptionOutput {
@@ -49,5 +60,9 @@ type RetrySubscriptionOutput {
 
 type CancelSubscriptionOutput {
   status: String!
+}
+
+type ChangeSubscriptionOutput {
+  accessToken: String!
 }
 

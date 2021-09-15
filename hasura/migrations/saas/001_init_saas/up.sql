@@ -74,6 +74,8 @@ CREATE TABLE saas_membership(
   CONSTRAINT id_role_saas_role_id_fkey FOREIGN KEY(id_role) REFERENCES saas_role(id) ON UPDATE NO ACTION ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
 
+CREATE INDEX idx_saas_membership_id_account ON saas_membership(id_account);
+
 CREATE TRIGGER saas_membership_set_timestamp BEFORE UPDATE ON saas_membership FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
 
 -- Saas User Account
@@ -148,6 +150,8 @@ CREATE TABLE subscription_status(
   CONSTRAINT id_plan_subscription_plan_id_fkey FOREIGN KEY(id_plan) REFERENCES subscription_plan(id) ON UPDATE NO ACTION ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED,
   CONSTRAINT id_account_saas_account_id_fkey FOREIGN KEY(id_account) REFERENCES saas_account(id) ON UPDATE NO ACTION ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED
 );
+
+CREATE INDEX idx_subscription_status_stripe_subscription_id ON subscription_status(stripe_subscription_id);
 
 CREATE TRIGGER subscription_status_set_timestamp BEFORE UPDATE ON subscription_status FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
 

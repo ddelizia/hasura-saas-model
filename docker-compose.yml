@@ -23,6 +23,7 @@ services:
       SAAS_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD:-postgrespassword}@postgres:5432/postgres
       HASURA_GRAPHQL_MIGRATIONS_DIR: /data/hasura/migrations
       HASURA_GRAPHQL_METADATA_DIR: /data/hasura/metadata
+      MICRO_SUBSCRIPTIONS_BASE_URL: "http://hs-subscription:1340"
     volumes:
     - ./hasura:/data/hasura
       
