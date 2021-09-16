@@ -8,7 +8,6 @@ jobs:
 
   create-release:
     name: Creating release
-    needs: ["test-saas"]
     runs-on: ubuntu-latest
     steps:
       
