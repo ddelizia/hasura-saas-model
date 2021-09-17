@@ -40,8 +40,7 @@ input RetrySubscriptionInput {
 }
 
 input ChangeSubscriptionInput {
-  account_id: String!
-  is_active: Boolean!
+  id_plan: String!
 }
 
 type InitSubscriptionOutput {
@@ -63,6 +62,7 @@ type CancelSubscriptionOutput {
 }
 
 type ChangeSubscriptionOutput {
-  accessToken: String!
+  account_id: String!
+  is_active: Boolean!
 }
 
