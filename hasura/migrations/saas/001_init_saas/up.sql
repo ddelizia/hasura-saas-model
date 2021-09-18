@@ -106,8 +106,9 @@ CREATE TABLE subscription_plan(
 CREATE TRIGGER subscription_plan_set_timestamp BEFORE UPDATE ON subscription_plan FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
 
 INSERT INTO subscription_plan (id, description) VALUES
-  ('basic',   'basic plan'),
-  ('premium', 'premium plan');
+  ('basic',     'basic plan'),
+  ('enterprise','enterprise plan'),
+  ('premium',   'premium plan');
 
 
 -- Subscription Active Plan
