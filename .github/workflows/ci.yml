@@ -14,7 +14,14 @@ on:
       - '.gitignore'
 
 env:
-  HASURA_ADMIN_SECRET: myadminsecretkey
+  HASURA_SAAS_VERSION: "v0.0.1-alpha.3"
+
+  STRIPE_KEY: ${{ secrets.STRIPE_KEY }}
+  STRIPE_PRICE_ID: ${{ secrets.STRIPE_PRICE_ID }}
+  STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+
+  HASURA_ADMIN_SECRET: mysecrethasura
+  POSTGRES_PASSWORD: "postgrespassword"
 
 jobs:
   test-saas:

@@ -2,7 +2,7 @@
 
 set -e
 
-. ./scripts/hasura/functions.sh
+source ./scripts/hasura/functions.sh
 
 DATABASE="saas"
 WAIT=10
