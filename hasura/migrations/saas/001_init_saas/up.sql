@@ -9,7 +9,7 @@ $$ LANGUAGE plpgsql;
 
 
 -- Saas Account
-CREATE TABLE saas_account(
+CREATE TABLE public.saas_account(
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   name text NOT NULL UNIQUE,
   id_address_invoice uuid,
@@ -22,7 +22,7 @@ CREATE TRIGGER saas_account_set_timestamp BEFORE UPDATE ON saas_account FOR EACH
 
 
 -- Saas Role
-CREATE TABLE saas_role(
+CREATE TABLE public.saas_role(
   id text NOT NULL,
   description text NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -32,7 +32,7 @@ CREATE TABLE saas_role(
 
 CREATE TRIGGER saas_role_set_timestamp BEFORE UPDATE ON saas_role FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
 
-INSERT INTO saas_role (id, description) VALUES
+INSERT INTO public.saas_role (id, description) VALUES
   ('admin',         'Role with all priviledges'),
   ('account_owner', 'Owner of an account, it has  all priviledges within an account'),
   ('account_admin', 'Administrator of the account'),
@@ -42,7 +42,7 @@ INSERT INTO saas_role (id, description) VALUES
 
 
 -- Saas Address
-CREATE TABLE saas_address(
+CREATE TABLE public.saas_address(
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   id_account uuid,
   id_user text NOT NULL,
@@ -61,11 +61,12 @@ CREATE TRIGGER saas_address_set_timestamp BEFORE UPDATE ON saas_address FOR EACH
 ALTER TABLE saas_account ADD CONSTRAINT id_address_invoice_saas_address_id_fkey FOREIGN KEY(id_address_invoice) REFERENCES saas_address(id);
 
 -- Saas Membership
-CREATE TABLE saas_membership(
+CREATE TABLE public.saas_membership(
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   id_account uuid NOT NULL,
   id_user text NOT NULL,
   id_role text NOT NULL,
+  selected_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   PRIMARY KEY (id),
@@ -75,11 +76,12 @@ CREATE TABLE saas_membership(
 );
 
 CREATE INDEX idx_saas_membership_id_account ON saas_membership(id_account);
+CREATE INDEX idx_saas_membership_id_account_selected_at ON saas_membership(id_account,selected_at);
 
 CREATE TRIGGER saas_membership_set_timestamp BEFORE UPDATE ON saas_membership FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
 
 -- Saas User Account
-CREATE OR REPLACE VIEW "public"."saas_user_account" AS
+CREATE OR REPLACE VIEW public.saas_user_account AS
 SELECT
   saas_account.id,
   saas_account.name,
@@ -93,7 +95,7 @@ WHERE
 
 
 -- Subscription Plan
-CREATE TABLE subscription_plan(
+CREATE TABLE public.subscription_plan(
   id text NOT NULL,
   description text NOT NULL,
   is_active boolean NOT NULL DEFAULT FALSE,
@@ -113,7 +115,7 @@ INSERT INTO subscription_plan (id, description) VALUES
 
 -- Subscription Active Plan
 CREATE
-OR REPLACE VIEW "public"."subscription_active_plan" AS
+OR REPLACE VIEW public.subscription_active_plan AS
 SELECT
   subscription_plan.id,
   subscription_plan.description
@@ -124,7 +126,7 @@ WHERE
 
 
 -- Subscription Customer
-CREATE TABLE subscription_customer(
+CREATE TABLE public.subscription_customer(
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   id_account uuid NOT NULL UNIQUE,
   stripe_customer text NOT NULL,
@@ -138,7 +140,7 @@ CREATE TRIGGER subscription_customer_set_timestamp BEFORE UPDATE ON subscription
 
 
 -- Subscription Status
-CREATE TABLE subscription_status(
+CREATE TABLE public.subscription_status(
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   id_account uuid NOT NULL UNIQUE,
   status text NOT NULL,
@@ -158,7 +160,7 @@ CREATE TRIGGER subscription_status_set_timestamp BEFORE UPDATE ON subscription_s
 
 
 -- Subscription Event
-CREATE TABLE subscription_event(
+CREATE TABLE public.subscription_event(
   id uuid NOT NULL DEFAULT gen_random_uuid(),
   data jsonb NOT NULL,
   type text NOT NULL,

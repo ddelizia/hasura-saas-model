@@ -34,8 +34,19 @@ select_permissions:
     - id_role
     - id_user
     filter:
-      id_account:
-        _eq: X-Hasura-Account-Id
+      _and:
+      - id_account:
+          _eq: X-Hasura-Account-Id
+      - _exists:
+          _table:
+            name: subscription_status
+            schema: public
+          _where:
+            _and:
+            - is_active:
+                _eq: true
+            - id_account:
+                _eq: X-Hasura-Account-Id
   role: account_admin
 - permission:
     columns:
@@ -43,8 +54,19 @@ select_permissions:
     - id_role
     - id_user
     filter:
-      id_account:
-        _eq: X-Hasura-Account-Id
+      _and:
+      - id_account:
+          _eq: X-Hasura-Account-Id
+      - _exists:
+          _table:
+            name: subscription_status
+            schema: public
+          _where:
+            _and:
+            - is_active:
+                _eq: true
+            - id_account:
+                _eq: X-Hasura-Account-Id
   role: account_owner
 - permission:
     columns:
@@ -58,4 +80,53 @@ select_permissions:
           _eq: X-Hasura-Account-Id
       - id_user:
           _eq: X-Hasura-User-Id
+      - _exists:
+          _table:
+            name: subscription_status
+            schema: public
+          _where:
+            _and:
+            - is_active:
+                _eq: true
+            - id_account:
+                _eq: X-Hasura-Account-Id
   role: account_user
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - id_role
+    - id_user
+    filter:
+      _exists:
+        _table:
+          name: subscription_status
+          schema: public
+        _where:
+          _and:
+          - is_active:
+              _eq: true
+          - id_account:
+              _eq: X-Hasura-Account-Id
+    set:
+      id_account: x-hasura-X-Hasura-Account-Id
+  role: account_admin
+- permission:
+    check: null
+    columns:
+    - id_role
+    - id_user
+    filter:
+      _exists:
+        _table:
+          name: subscription_status
+          schema: public
+        _where:
+          _and:
+          - is_active:
+              _eq: true
+          - id_account:
+              _eq: X-Hasura-Account-Id
+    set:
+      id_account: x-hasura-X-Hasura-Account-Id
+  role: account_owner

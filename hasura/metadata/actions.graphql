@@ -1,3 +1,15 @@
+type Query {
+  saas_get_current_account(
+    data: SaasGetCurrentAccountInput!
+  ): SaasGetCurrentAccountOutput
+}
+
+type Mutation {
+  saas_set_current_account(
+    data: SaasSetCurrentAccountInput!
+  ): SaasSetCurrentAccountOutput
+}
+
 type Mutation {
   subscription_cancel: CancelSubscriptionOutput
 }
@@ -43,17 +55,25 @@ input ChangeSubscriptionInput {
   id_plan: String!
 }
 
+input SaasGetCurrentAccountInput {
+  id_user: String!
+}
+
+input SaasSetCurrentAccountInput {
+  id_account: uuid!
+}
+
 type InitSubscriptionOutput {
-  account_id: String!
+  id_account: String!
 }
 
 type CreateSubscriptionOutput {
-  account_id: String!
+  id_account: String!
   is_active: Boolean!
 }
 
 type RetrySubscriptionOutput {
-  account_id: String!
+  id_account: String!
   is_active: Boolean!
 }
 
@@ -62,7 +82,16 @@ type CancelSubscriptionOutput {
 }
 
 type ChangeSubscriptionOutput {
-  account_id: String!
+  id_account: String!
   is_active: Boolean!
+}
+
+type SaasGetCurrentAccountOutput {
+  id_account: String!
+  id_role: uuid!
+}
+
+type SaasSetCurrentAccountOutput {
+  id_account: uuid!
 }
 
