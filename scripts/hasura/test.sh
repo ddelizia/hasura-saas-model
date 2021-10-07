@@ -7,8 +7,6 @@ source ./scripts/hasura/functions.sh
 DATABASE="saas"
 WAIT=10
 
-export HASURA_GRAPHQL_ADMIN_SECRET=$HASURA_ADMIN_SECRET
-
 echo "⌛️ Wait $WAIT s"
 sleep $WAIT
 

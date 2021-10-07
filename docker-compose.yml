@@ -21,11 +21,12 @@ services:
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
       HASURA_GRAPHQL_DEV_MODE: "false"
       HASURA_GRAPHQL_EXPERIMENTAL_FEATURES: "inherited_roles"
-      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_ADMIN_SECRET}
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       SAAS_DATABASE_URL: postgres://postgres:${POSTGRES_PASSWORD}@postgres:5432/postgres
       HASURA_GRAPHQL_MIGRATIONS_DIR: /data/hasura/migrations
       HASURA_GRAPHQL_METADATA_DIR: /data/hasura/metadata
-      MICRO_SUBSCRIPTIONS_BASE_URL: "http://hs-subscription:1340"
+      HS_SUBSCRIPTION_BASE_URL: "http://hs-subscription:1340"
+      HS_SAAS_BASE_URL: "http://hs-saas:1340"
     volumes:
     - ./hasura:/data/hasura
 
@@ -34,7 +35,7 @@ services:
     environment: 
       SUBSCRIPTION.STRIPE.APIKEY: ${STRIPE_KEY}
       SUBSCRIPTION.STRIPE.WEBHOOKSECRET: ${STRIPE_WEBHOOK_SECRET}
-      GRAPHQL.HASURA.ADMINSECRET: ${HASURA_ADMIN_SECRET}
+      GRAPHQL.HASURA.ADMINSECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       GRAPHQL.URL: "http://graphql-engine:8080/v1/graphql"
       LOGGER.LEVEL: "info"
     expose: 
@@ -42,11 +43,21 @@ services:
     ports: 
     - "1341:1340"
 
-
   hs-rp:
     image: ghcr.io/ddelizia/hasura-saas-rp:${HASURA_SAAS_VERSION}
     environment: 
-      GRAPHQL.HASURA.ADMINSECRET: ${HASURA_ADMIN_SECRET}
+      GRAPHQL.HASURA.ADMINSECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      GRAPHQL.URL: "http://graphql-engine:8080/v1/graphql"
+      LOGGER.LEVEL: "info"
+    expose: 
+    - "1340"
+    ports: 
+    - "1342:1340"
+
+  hs-saas:
+    image: ghcr.io/ddelizia/hasura-saas-saas:${HASURA_SAAS_VERSION}
+    environment: 
+      GRAPHQL.HASURA.ADMINSECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       GRAPHQL.URL: "http://graphql-engine:8080/v1/graphql"
       LOGGER.LEVEL: "info"
     expose: 
