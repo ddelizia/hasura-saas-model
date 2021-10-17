@@ -44,7 +44,7 @@ input InitSubscriptionInput {
 }
 
 input CreateSubscriptionInput {
-  payment_method_id: String!
+  payment_method_id: String
 }
 
 input RetrySubscriptionInput {

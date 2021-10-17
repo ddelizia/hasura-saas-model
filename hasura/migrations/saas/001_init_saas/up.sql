@@ -100,6 +100,9 @@ CREATE TABLE public.subscription_plan(
   description text NOT NULL,
   is_active boolean NOT NULL DEFAULT FALSE,
   stripe_code text,
+  trial_days integer,
+  price numeric,
+  currency text,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   PRIMARY KEY (id)
@@ -108,6 +111,7 @@ CREATE TABLE public.subscription_plan(
 CREATE TRIGGER subscription_plan_set_timestamp BEFORE UPDATE ON subscription_plan FOR EACH ROW EXECUTE PROCEDURE trigger_set_timestamp();
 
 INSERT INTO subscription_plan (id, description) VALUES
+  ('free',      'free plan'),
   ('basic',     'basic plan'),
   ('enterprise','enterprise plan'),
   ('premium',   'premium plan');
@@ -118,7 +122,9 @@ CREATE
 OR REPLACE VIEW public.subscription_active_plan AS
 SELECT
   subscription_plan.id,
-  subscription_plan.description
+  subscription_plan.description,
+  subscription_plan.price,
+  subscription_plan.trial_days
 FROM
   subscription_plan
 WHERE
